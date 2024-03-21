@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,27 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/redis', function () {
+
+    $visits = Redis::incr('visits');
+
+    $visits = Redis::incrBy('visits', 5);
+
+    return $visits;
+});
+
+Route::get('/videos/{id}', function () {
+
+    $downloads = Redis::get('videos.{$id}.downloads');
+
+    return view('videos')->withDownloads($downloads);
+});
+
+Route::get('/videos/{id}/downloads', function ($id) {
+
+    $downloads = Redis::incr('videos.{$id}.downloads');
+
+    return back();
 });
