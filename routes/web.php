@@ -34,6 +34,7 @@ Route::get('/videos/{id}', function () {
     return view('videos')->withDownloads($downloads);
 });
 
+
 Route::get('/videos/{id}/downloads', function ($id) {
 
     $downloads = Redis::incr('videos.{$id}.downloads');
